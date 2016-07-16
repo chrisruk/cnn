@@ -73,16 +73,30 @@ for m in mod:
             y[snr].append(z)
     count += 1    
 
-network = input_data(shape=[None, 2, 128,1])
-network = conv_2d(network, 64,[1,3], activation='relu')
-network = conv_2d(network, 16,[2,3], activation='relu')
-network = fully_connected(network, 128, activation='relu')
-network = fully_connected(network, len(mod), activation='softmax')
-network = regression(network, optimizer='adam',
+def shuffle_in_unison_inplace(a, b):
+    assert len(a) == len(b)
+    p = numpy.random.permutation(len(a))
+    return a[p], b[p]
+
+
+X,Y =  shuffle_in_unison_inplace(numpy.array(X),numpy.array(Y))
+
+
+config = tf.ConfigProto(allow_soft_placement = True)
+sess = tf.Session(config = config)
+with tf.Session(config=config) as sess:
+#with tf.device('/gpu:0'):
+    network = input_data(shape=[None, 2, 128,1])
+    network = conv_2d(network, 64,[1,3], activation='relu')
+    network = conv_2d(network, 16,[2,3], activation='relu')
+    network = fully_connected(network, 128, activation='relu')
+    network = dropout(network, 0.5)
+    network = fully_connected(network, len(mod), activation='softmax')
+    network = regression(network, optimizer='adam',
                      loss='categorical_crossentropy',
                      learning_rate=0.001)
-model = tflearn.DNN(network, tensorboard_verbose=0)
-model.fit(X, Y, n_epoch=400, shuffle=True,show_metric=True, batch_size=1024)
+    model = tflearn.DNN(network, tensorboard_verbose=0)
+    model.fit(X, Y, n_epoch=400, shuffle=True,show_metric=True, batch_size=1024)
 
 for snr in sorted(x):
     gd = 0
