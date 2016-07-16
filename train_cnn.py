@@ -12,7 +12,6 @@ import struct
 import numpy as np
 import tensorflow as tf   
 import specest 
-from tensor import *
 import matplotlib.pylab as plt
 import tflearn
 import matplotlib.pyplot as plt
@@ -20,7 +19,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 import cPickle
 import time
-from tensor import *
 from numpy import zeros, newaxis
 import tflearn
 from tflearn.data_utils import shuffle, to_categorical
@@ -84,7 +82,7 @@ network = regression(network, optimizer='adam',
                      loss='categorical_crossentropy',
                      learning_rate=0.001)
 model = tflearn.DNN(network, tensorboard_verbose=0)
-model.fit(X, Y, n_epoch=100, shuffle=True,show_metric=True, batch_size=1024)
+model.fit(X, Y, n_epoch=400, shuffle=True,show_metric=True, batch_size=1024)
 
 for snr in sorted(x):
     gd = 0
