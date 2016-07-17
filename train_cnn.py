@@ -96,7 +96,7 @@ with tf.Session(config=config) as sess:
                      loss='categorical_crossentropy',
                      learning_rate=0.001)
     model = tflearn.DNN(network, tensorboard_verbose=0)
-    model.fit(X, Y, n_epoch=1000, shuffle=True,show_metric=True, batch_size=1024)
+    model.fit(X, Y, n_epoch=800,validation_set=0.05, shuffle=True,show_metric=True, batch_size=1024)
     model.save("cnn.ann")
     #save_graph(sess,"/tmp/","saved_checkpoint","checkpoint_state","input_graph.pb","output_graph.pb")
     
