@@ -62,10 +62,10 @@ for m in mod:
     mval[m] = z
     for snr in data[m]:
         dat = data[m][snr]
-        for d in dat[:len(dat)//2]:
+        for d in dat[:int(len(dat)//1.5)]:
             X.append(d)
             Y.append(z)
-        for d in dat[len(dat)//2:]:
+        for d in dat[int(len(dat)//1.5):]:
             if not snr in x:
                 x[snr] = []
                 y[snr] = []
@@ -96,7 +96,7 @@ with tf.Session(config=config) as sess:
                      loss='categorical_crossentropy',
                      learning_rate=0.001)
     model = tflearn.DNN(network, tensorboard_verbose=0)
-    model.fit(X, Y, n_epoch=800,validation_set=0.05, shuffle=True,show_metric=True, batch_size=1024)
+    model.fit(X, Y, n_epoch=200,shuffle=True,show_metric=True, batch_size=1024)
     model.save("cnn.ann")
     #save_graph(sess,"/tmp/","saved_checkpoint","checkpoint_state","input_graph.pb","output_graph.pb")
     
