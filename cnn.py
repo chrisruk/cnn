@@ -13,12 +13,6 @@ def loadRadio():
         data[k[0]] = {}
         allm.append(k[0])
 
-    """
-    data["FM"] = {}
-    data["FM"][18] = []
-    allm.append("FM")
-    """
-
     mod = sorted(set(allm))
 
     for m in mod:
@@ -32,18 +26,6 @@ def loadRadio():
                         data[k[0]][k[1]] = []
                     data[k[0]][k[1]].append([a,b])
     
-                
-
-    """
-    f = np.fromfile('fm2.dat', dtype=np.complex64)
-    alldat = []
-    for N in range(0,1000):
-        samps = np.array(f[N*128:(N*128)+128])
-        dat = [samps.real[:,newaxis],samps.imag[:,newaxis]]
-        data["FM"][18].append(dat)
-    """
-    
-
     X = []
     Y = []
     x = {}
@@ -57,20 +39,22 @@ def loadRadio():
         z[count] = 1     
         mval[m] = z
         for snr in data[m]:
+
             dat = data[m][snr]
-            for d in dat[:int(len(dat)//1.5)]:
+            for d in dat[:int(len(dat)/2)]:
+
                 X.append(d)
                 Y.append(z)
-            for d in dat[int(len(dat)//1.5):]:
+
+            for d in dat[int(len(dat)/2):]:
+
                 if not snr in x:
                     x[snr] = []
                     y[snr] = []
+
                 x[snr].append(d)
                 y[snr].append(z)
-        count += 1  
 
-        
+        count += 1       
 
-     
-
-    return X,Y,x,y,mod
+    return X,Y,x,y,mod,data
