@@ -25,7 +25,6 @@ def loadRadio():
                     if k[1] not in data[k[0]]:
                         data[k[0]][k[1]] = []
                     data[k[0]][k[1]].append([a,b])
-    
     X = []
     Y = []
     x = {}
@@ -39,22 +38,16 @@ def loadRadio():
         z[count] = 1     
         mval[m] = z
         for snr in data[m]:
-
             dat = data[m][snr]
-            for d in dat[:int(len(dat)/2)]:
-
+            for d in dat[:int(len(dat)//1.5)]:
                 X.append(d)
                 Y.append(z)
-
-            for d in dat[int(len(dat)/2):]:
-
+            for d in dat[int(len(dat)//1.5):]:
                 if not snr in x:
                     x[snr] = []
                     y[snr] = []
-
                 x[snr].append(d)
                 y[snr].append(z)
+        count += 1   
 
-        count += 1       
-
-    return X,Y,x,y,mod,data
+    return X,Y,x,y,mod
